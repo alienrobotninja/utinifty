@@ -3,6 +3,9 @@ import Hero from '../components/Hero'
 import Container from '../components/Layout/Container'
 import Card from '../components/Card'
 import Link from 'next/link'
+import Products from "../components/Products";
+import Image from "next/image";
+import HeaderImage from "../assets/img/left-section.png"
 
 const links = [
   {
@@ -32,24 +35,39 @@ const Home = () => {
   return (
     <>
       <Head>
-        <title>Mintbase Engineering</title>
+        <title>Niftiqet | Mint, Buy and Sell Tickets online</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Hero />
 
-      <Container className="flex justify-center my-24">
-        <div className="grid lg:grid-cols-2 grid-cols-1 gap-8 md:gap-12">
-          {links.map((link, index) => (
-            <Link href={link.href} key={'link' + index} passHref>
-              <a>
-                <div className="flex w-auto max-w-64 h-full">
-                  <Card title={link.title} description={link.description} />
-                </div>
-              </a>
-            </Link>
-          ))}
-        </div>
-      </Container>
+      <header className="home-header">
+        <Container className="w-full flex items-center">
+          <div className="left--img">
+            <Image alt="header image" src={HeaderImage} objectFit="contain" />
+          </div>
+          <div className="right--cta">
+            <span className="text-xs inline-block py-2 px-4 leading-none text-center whitespace-nowrap sb-regular align-baseline badge">
+              Be on the Live Shows
+            </span>
+            <div className="main-text sb-bold">
+              Get Any <span className="text-theme-blue">NFT</span> <br/> Tickets Online
+            </div>
+            <button className="theme-btn">
+              <span className="text-black">Buy NFT Ticket</span>
+            </button>
+          </div>
+        </Container>
+      </header>
+      <section className="w-full pb-20">
+        <Container>
+          <h3 className="text-xl font-light uppercase text-theme-blue">Latest entries</h3>
+          <div className="card-grid-4 mt-10">
+            <Card title="A nice test" description="Scary huh, fret not my fellow" media={HeaderImage} />
+            <Card title="A nice test" description="Scary huh, fret not my fellow" media={HeaderImage} />
+            <Card title="A nice test" description="Scary huh, fret not my fellow" media={HeaderImage} />
+            <Card title="A nice test" description="Scary huh, fret not my fellow" media={HeaderImage} />
+          </div>
+        </Container>
+      </section>
     </>
   )
 }

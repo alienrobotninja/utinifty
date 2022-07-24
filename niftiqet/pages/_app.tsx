@@ -7,6 +7,7 @@ import 'tailwindcss/tailwind.css'
 
 import {GRAPH_MAINNET_HTTPS_URI, GRAPH_TESTNET_HTTPS_URI,} from '../constants/mintbase'
 import Base from '../components/Layout/Base'
+import "../assets/scss/style.scss"
 
 function MyApp({Component, pageProps}: AppProps) {
     const apolloClient = useApollo({

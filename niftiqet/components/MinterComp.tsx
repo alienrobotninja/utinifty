@@ -17,7 +17,7 @@ const FETCH_MINTER_STORE = gql`
   }
 `
 
-const Minter = () => {
+const MinterComp = () => {
   const { wallet, isConnected, details } = useWallet()
   const [coverImage, setCoverImage] = useState<File | null>(null)
   const [isMinting, setIsMinting] = useState<boolean>(false)
@@ -74,7 +74,7 @@ const Minter = () => {
   if (loading) return <div>Loading...</div>
 
   return (
-    <div className="w-full">
+    <div className="w-full minter-modal">
       <form
         className="bg-white rounded px-8 pt-6 pb-8 mb-4"
         onSubmit={handleSubmit(onSubmit)}
@@ -185,4 +185,4 @@ const Minter = () => {
   )
 }
 
-export default Minter
+export default MinterComp

@@ -2,6 +2,7 @@ import { useQuery } from '@apollo/client'
 import { gql } from 'apollo-boost'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
+import Card from "./Card";
 
 const FETCH_STORE = gql`
   query FetchStore($storeId: String!, $limit: Int = 20, $offset: Int = 0) {
@@ -35,6 +36,7 @@ const FETCH_STORE = gql`
           metadata {
             title
             media
+            description
           }
         }
       }
@@ -45,13 +47,7 @@ const FETCH_STORE = gql`
 const NFT = ({ media, title }: { media: string; title: string }) => {
   return (
     <div className="w-full md:w-1/2 lg:w-1/3 p-3 mb-4">
-      <div className="h-96">
-        <div className="relative items-center min-h-full">
-          <a href={`${media}`}>
-            <Image alt={title} src={media} layout="fill" objectFit="contain" />
-          </a>
-        </div>
-      </div>
+      <Card title={title} description={"Just a test"} media={media} />
     </div>
   )
 }

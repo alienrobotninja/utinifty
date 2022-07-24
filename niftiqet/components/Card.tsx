@@ -1,19 +1,31 @@
-import { MbText } from 'mintbase-ui'
+
+import Image from 'next/image'
 
 const Card = ({
   title,
   description,
+  media
 }: {
   title: string
-  description: string
+  description: string,
+  media: string,
 }) => {
   return (
-    <div className="flex flex-col w-full h-full rounded bg-mb-background hover:bg-gray-700 cursor-pointer p-4 hover:transition-all ease-in-out duration-700">
-      <div>
-        <MbText className="h3-130 text-white">{title}</MbText>
+    <div className="flex flex-col w-full h-full nft-card cursor-pointer p-4 hover:transition-all ease-in-out duration-700">
+      <div className="media-holder">
+          <Image layout="fill" objectFit="cover" src={media} alt="product card"/>
+          <span className="stats"></span>
       </div>
-      <div className='mt-4'>
-        <MbText className="p-big-90 text-white">{description}</MbText>
+      <div className='card-content'>
+          <p className="font-bold text-gray-300 sb-bold">Africa Real Estate Summit, Awards & Expo</p>
+          <p className="text-gray-300 text-xs my-2 sb-light">Lagos Oriental Hotel • Lagos, LA</p>
+          <p className="text-gray-300 text-xs my-2 sb-light">Fri, Oct 7, 9:00 AM</p>
+          <div className="flex justify-between items-center py-2">
+              {/*<span className="text-gray-300 text-sm sb-semi-bold">2k Followers</span>*/}
+              <button className="theme-btn w-full">
+                  <span className="text-black">Buy</span>
+              </button>
+          </div>
       </div>
     </div>
   )

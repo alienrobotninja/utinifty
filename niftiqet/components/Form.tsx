@@ -1,5 +1,6 @@
-import { useWallet } from '../services/providers/MintbaseWalletContext'
-import { useForm } from 'react-hook-form'
+import {useWallet} from '../services/providers/MintbaseWalletContext'
+import {useForm} from 'react-hook-form'
+import {MetadataField} from "mintbase";
 
 const Form = () => {
   const { wallet, isConnected, details } = useWallet()
@@ -9,7 +10,20 @@ const Form = () => {
     formState: { errors },
   } = useForm()
   const onSubmit = async (data: any) => {
-    console.log(data)
+    if (!isConnected) return
+    console.log(data.coverImage)
+    const coverImage = data.coverImage[0]
+    const {data: uploadData, error:uploadError} = await wallet?.minter?.uploadField(MetadataField.Media, coverImage)
+    if (uploadError || !uploadData) {
+      console.error(uploadError)
+    }
+
+    wallet?.minter?.setMetadata({
+      title: data.title,
+      description: data.description
+    })
+
+    wallet?.mint(1, "niftiqet.mintspace2.testnet", undefined,undefined, "ticket")
   }
   return (
     <div className="w-full">
