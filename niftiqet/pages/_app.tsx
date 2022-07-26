@@ -8,6 +8,9 @@ import 'tailwindcss/tailwind.css'
 import {GRAPH_MAINNET_HTTPS_URI, GRAPH_TESTNET_HTTPS_URI,} from '../constants/mintbase'
 import Base from '../components/Layout/Base'
 import "../assets/scss/style.scss"
+import {useState} from "react";
+import {MantineProvider} from "@mantine/core";
+import {NotificationsProvider} from "@mantine/notifications";
 
 function MyApp({Component, pageProps}: AppProps) {
     const apolloClient = useApollo({
@@ -23,9 +26,13 @@ function MyApp({Component, pageProps}: AppProps) {
     return (
         <WalletProvider apiKey={process.env.NEXT_PUBLIC_MINTBASEJS_API_KEY || ''}>
             <ApolloProvider client={apolloClient}>
-                <Base>
-                        <Component {...pageProps} />
-                </Base>
+                <MantineProvider withGlobalStyles withNormalizeCSS>
+                    <NotificationsProvider>
+                        <Base>
+                            <Component {...pageProps} />
+                        </Base>
+                    </NotificationsProvider>
+                </MantineProvider>
             </ApolloProvider>
         </WalletProvider>
     )

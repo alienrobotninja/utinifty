@@ -3,6 +3,8 @@ import { gql } from 'apollo-boost'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import Card from "./Card";
+import {useWallet} from "../services/providers/MintbaseWalletContext";
+import { Modal } from '@mantine/core';
 
 const FETCH_STORE = gql`
   query FetchStore($storeId: String!, $limit: Int = 20, $offset: Int = 0) {
@@ -44,11 +46,9 @@ const FETCH_STORE = gql`
   }
 `
 
-const NFT = ({ media, title }: { media: string; title: string }) => {
+const NFT = ({ media, title, description }: { media: string; title: string; description: string }) => {
   return (
-    <div className="w-full md:w-1/2 lg:w-1/3 p-3 mb-4">
-      <Card title={title} description={"Just a test"} media={media} />
-    </div>
+      <Card title={title} description={description} media={media} />
   )
 }
 
@@ -76,8 +76,9 @@ type Thing = {
 
 const Products = ({ storeId }: { storeId: string }) => {
   const [store, setStore] = useState<Store | null>(null)
+  const [price, setPrice] = useState<string | null>(null)
   const [things, setThings] = useState<Thing[] | []>([])
-
+  const [priceModal, setPriceModal] = useState(false);
   const { data, loading } = useQuery(FETCH_STORE, {
     variables: {
       storeId: storeId,
@@ -86,6 +87,7 @@ const Products = ({ storeId }: { storeId: string }) => {
     },
   })
 
+  const {wallet, isConnected, details} = useWallet()
   useEffect(() => {
     if (!data) return
 
@@ -100,19 +102,23 @@ const Products = ({ storeId }: { storeId: string }) => {
     setThings(things)
   }, [data])
 
+  const listNFT = (ticket: { tokenId: string; storeId: string; }) => {
+      wallet?.list(`${ticket.tokenId}`, `${ticket.storeId}`, `${price}`)
+  }
   return (
-    <div className="w-full  px-6 py-12 bg-gray-100 border-t">
+    <div className="w-full py-12">
       {!loading && (
         <>
-          <h1 className="text-center text-xl text-gray-600 md:text-4xl px-6 py-12">
-            {store?.name}
-          </h1>
-          <div className="container max-w-8xl mx-auto pb-10 flex flex-wrap">
+          <Modal centered opened={priceModal} onClose={() => setPriceModal(false)} title="Set NFT ticket Price">
+            Modal without header, press escape or click on overlay to close
+          </Modal>
+          <div className="mx-auto pb-10 card-grid-4">
             {things.map((thing: Thing) => (
               <NFT
-                key={thing.metaId}
-                title={thing.metadata.title}
-                media={thing.metadata.media}
+                key={thing?.metaId}
+                title={thing?.metadata?.title}
+                media={thing?.metadata?.media}
+                descriprtion={thing?.metadata?.description}
               />
             ))}
           </div>

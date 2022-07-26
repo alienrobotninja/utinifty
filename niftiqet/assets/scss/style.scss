@@ -78,8 +78,10 @@ button {
     height: 100%;
     width: 100%;
     padding: 0 30px;
-    display: block;
+    display: flex;
     z-index: 3;
+    background: #000;
+    align-items: center;
   }
   &:after {
     content: '';
@@ -150,7 +152,7 @@ button.theme-btn  {
 .card-grid-4 {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-gap: 20px;
+  grid-gap: 30px;
 }
 .nft-card {
   background: #192122;
@@ -206,5 +208,53 @@ footer {
     border-top: 1px solid #53B6C4;
     line-height: 100px;
     text-align: center;
+  }
+}
+
+.sidebar {
+  width: 250px;
+  background: #02050E;
+  border-right: 1px solid #53B6C4;
+  .side--links {
+    margin-top: 50px;
+    li {
+      margin: 10px 0;
+      color: #A4B1B1;
+      a {
+        display: flex;
+        font-size: .85rem;
+        font-family: "DM Sans", sans-serif;
+        font-weight: 500;
+        align-items: center;
+        span {
+          display: block;
+          margin-left: 10px;
+        }
+      }
+    }
+    .active--link {
+      color: #53B6C4;
+    }
+  }
+}
+
+.dash-contents {
+  width: calc(100% - 250px);
+  height: 100vh;
+  .home-nav {
+    border-bottom: 1px solid #53B6C4;
+  }
+  .dash-content {
+    overflow-y: auto;
+    height: calc(100vh - 100px);
+    .dash--header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3.5rem;
+      min-height: 400px;
+      background: url("../img/ticketHeader.png") no-repeat center;
+      background-size: contain;
+    }
   }
 }
