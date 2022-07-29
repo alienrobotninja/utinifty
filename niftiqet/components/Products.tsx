@@ -5,6 +5,8 @@ import { useEffect, useState } from 'react'
 import Card from "./Card";
 import {useWallet} from "../services/providers/MintbaseWalletContext";
 import { Modal } from '@mantine/core';
+import Ticketing from "../pages/ticketing";
+import Tickets from "./Ticketing/Tickets";
 
 const FETCH_STORE = gql`
   query FetchStore($storeId: String!, $limit: Int = 20, $offset: Int = 0) {
@@ -28,17 +30,53 @@ const FETCH_STORE = gql`
       ) {
         id
         thingId
+        list {
+          acceptedOfferId
+          autotransfer
+          contractId
+          createdAt
+          id
+          price
+          ownerId
+          thingId
+        }
         thing {
           id
           metaId
           memo
+          storeId
           tokens {
             minter
+            id
+            thingId
+            thing {
+              metadata {
+                thing_id
+                media
+                id
+                title
+                type
+                extra
+              }
+            }
+            list {
+              acceptedOfferId
+              autotransfer
+              contractId
+              createdAt
+              id
+              price
+              ownerId
+              thingId
+            }
           }
           metadata {
-            title
+            thing_id
             media
-            description
+            id
+            title
+            type
+            extra
           }
         }
       }
@@ -46,6 +84,41 @@ const FETCH_STORE = gql`
   }
 `
 
+const FETCH_THING = gql`
+  query FetchThing($thingId: String!) {
+      thing(where: {id: {_eq: $thingId}}) {
+        id
+        memo
+        metaId
+        metadata {
+          thing_id
+          media
+          id
+          title
+          type
+          extra
+        }
+        storeId
+        tokens {
+          burnedAt
+          createdAt
+          crossHolder
+          crossRootKey
+          depth
+          holder
+          id
+          lastTransferred
+          loan
+          list {
+            acceptedOfferId
+            autotransfer
+            contractId
+            createdAt
+          }
+        }
+      }
+  }
+`
 const NFT = ({ media, title, description }: { media: string; title: string; description: string }) => {
   return (
       <Card title={title} description={description} media={media} />
@@ -69,15 +142,19 @@ type Thing = {
   metadata: {
     title: string
     media: string
+    description: string
+    extra: string
   }
   memo: string
   metaId: string
 }
 
-const Products = ({ storeId }: { storeId: string }) => {
+const Products = ({ storeId, burner }: { storeId: string, burner: Boolean }) => {
   const [store, setStore] = useState<Store | null>(null)
   const [price, setPrice] = useState<string | null>(null)
   const [things, setThings] = useState<Thing[] | []>([])
+  const [thing, setThing] = useState<Thing | null>(null)
+  const [activeThing, setActiveThing] = useState<string>("")
   const [priceModal, setPriceModal] = useState(false);
   const { data, loading } = useQuery(FETCH_STORE, {
     variables: {
@@ -105,21 +182,26 @@ const Products = ({ storeId }: { storeId: string }) => {
   const listNFT = (ticket: { tokenId: string; storeId: string; }) => {
       wallet?.list(`${ticket.tokenId}`, `${ticket.storeId}`, `${price}`)
   }
+  function loadThing(thing: any) {
+    setThing(thing)
+    setPriceModal(true)
+  }
   return (
     <div className="w-full py-12">
       {!loading && (
         <>
-          <Modal centered opened={priceModal} onClose={() => setPriceModal(false)} title="Set NFT ticket Price">
-            Modal without header, press escape or click on overlay to close
+          <Modal overflow="inside"  centered opened={priceModal} fullScreen onClose={() => setPriceModal(false)} title="Ticket Collection">
+            <Tickets thing={thing} burner={burner}  />
           </Modal>
           <div className="mx-auto pb-10 card-grid-4">
             {things.map((thing: Thing) => (
-              <NFT
-                key={thing?.metaId}
-                title={thing?.metadata?.title}
-                media={thing?.metadata?.media}
-                descriprtion={thing?.metadata?.description}
-              />
+                <div onClick={() => loadThing(thing)} key={thing?.metaId}>
+                  <NFT
+                    title={thing?.metadata?.title}
+                    media={thing?.metadata?.media}
+                    description={thing?.metadata?.description}
+                  />
+                </div>
             ))}
           </div>
         </>

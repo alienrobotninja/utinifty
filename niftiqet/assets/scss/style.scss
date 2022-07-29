@@ -67,7 +67,7 @@ body {
   }
 }
 
-button {
+button.btn {
   line-height: 50px;
   height: 50px;
   position: relative;
@@ -104,7 +104,7 @@ button {
 .dropdown-menu {
   top: 70px;
 }
-button.theme-btn  {
+button.btn.theme-btn  {
   span {
     background: linear-gradient(270deg, #67D2E1 3.21%, #209BAA 100%);
     color: #02050E;

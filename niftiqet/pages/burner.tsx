@@ -2,18 +2,14 @@ import MinterComp from "../components/MinterComp";
 import Products from "../components/Products";
 import {useState} from "react";
 
-const Ticketing = () => {
+const Burner = () => {
     const [minterModal, setMinterModal] = useState(false)
     const closeModal = () => setMinterModal(false)
     return (
         <div className="px-6">
-            {minterModal && <MinterComp closeModal={closeModal}/>}
-            <header className="dash--header text-gray-200">
-                <h3>Discover, Create and Sell<br/> Your Own NFT Ticket.</h3>
-            </header>
             <div className="flex justify-between">
-            <h3 className="sb-bold text-gray-200 flex items-center">
-                <span>Marketplace</span>
+            <h3 className="sb-bold text-gray-200 mt-5 flex items-center">
+                <span>Burner</span>
                 <svg width="27" height="26" viewBox="0 0 27 26" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <rect x="0.890259" width="26" height="26" fill="url(#pattern0)"/>
                     <defs>
@@ -24,13 +20,10 @@ const Ticketing = () => {
                     </defs>
                 </svg>
             </h3>
-                <button className="btn" onClick={() => setMinterModal(true)}>
-                    <span className="text-theme-blue">Mint Ticket</span>
-                </button>
             </div>
-            <Products burner={false} storeId="niftiqet.mintspace2.testnet"/>
+            <Products burner={true}  storeId="niftiqet.mintspace2.testnet"/>
         </div>
     );
 }
 
-export default Ticketing
+export default Burner

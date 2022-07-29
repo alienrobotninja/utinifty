@@ -51,21 +51,18 @@ const Home = () => {
             <div className="main-text sb-bold">
               Get Any <span className="text-theme-blue">NFT</span> <br/> Tickets Online
             </div>
-            <button className="theme-btn">
-              <span className="text-black">Buy NFT Ticket</span>
-            </button>
+            <Link href="/ticketing" passHref>
+              <button className="btn theme-btn">
+                <span className="text-black">Buy NFT Ticket</span>
+              </button>
+            </Link>
           </div>
         </Container>
       </header>
       <section className="w-full pb-20">
         <Container>
           <h3 className="text-xl font-light uppercase text-theme-blue">Latest entries</h3>
-          <div className="card-grid-4 mt-10">
-            <Card title="A nice test" description="Scary huh, fret not my fellow" media={HeaderImage} />
-            <Card title="A nice test" description="Scary huh, fret not my fellow" media={HeaderImage} />
-            <Card title="A nice test" description="Scary huh, fret not my fellow" media={HeaderImage} />
-            <Card title="A nice test" description="Scary huh, fret not my fellow" media={HeaderImage} />
-          </div>
+          <Products burner={false} storeId="niftiqet.mintspace2.testnet"/>
         </Container>
       </section>
     </>

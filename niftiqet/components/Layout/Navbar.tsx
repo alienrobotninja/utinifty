@@ -12,7 +12,7 @@ const Navbar = () => {
         <Container className='relative flex flex-col gap-24 h-12'>
           <div className="flex justify-between items-center">
             <Link href="/" passHref>
-              <a className="text-gray-600 no-underline flex justify-center items-center">
+              <a className="text-gray-300 no-underline flex justify-center items-center">
                 NIFTIQET
               </a>
             </Link>
@@ -26,6 +26,7 @@ const Navbar = () => {
               <li><a href="#">FAQs</a></li>
               <li>
                   {!isConnected && <button
+                      className="btn"
                     onClick={
                       isConnected
                           ? () => {
@@ -44,7 +45,7 @@ const Navbar = () => {
                   <div className="flex justify-center">
                       <div>
                           <div className="dropdown relative">
-                              {isConnected && <button
+                              {isConnected && <button className="btn"
                                   onClick={() => setActive(!active)}
                               >
                                   <span className="bg-black text-white">

@@ -64,7 +64,7 @@ const MinterComp = ({closeModal}: { closeModal: Function }) => {
         wallet.minter.setMetadata({
             title: data.title,
             description: data.description,
-            time: data.time
+            extra: data.time
         })
 
         setIsMinting(false)

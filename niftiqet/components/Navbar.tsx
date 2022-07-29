@@ -10,15 +10,27 @@ const Navbar = () => {
         <div className="hidden lg:contents">
           <div className='relative flex flex-col gap-24 h-12'>
             <div className="flex justify-between items-center">
-              <Link href="/" passHref>
-                <a className="text-gray-200 no-underline flex justify-center items-center">
+              <span className="text-gray-200 no-underline flex justify-center items-center">
                   Home
-                </a>
-              </Link>
+              </span>
               <ul className="link-list">
                 <li>
-                  <span className="text-gray-200"
-                  >Welcome {wallet?.activeAccount?.accountId}</span>
+                    {!isConnected && <button className="btn"
+                        onClick={
+                            isConnected
+                                ? () => {
+                                    wallet?.disconnect()
+                                    window.location.reload()
+                                }
+                                : () => {
+                                    wallet?.connect({ requestSignIn: true })
+                                }
+                        }
+                    >
+                  <span className="bg-black text-white">
+                    {isConnected ? 'Disconnect' : 'Connect'}
+                  </span>
+                    </button> }
                 </li>
               </ul>
             </div>
