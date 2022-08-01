@@ -14,7 +14,7 @@ const Card = ({
   return (
     <div className="flex flex-col w-full h-full nft-card cursor-pointer p-4 hover:transition-all ease-in-out duration-700">
       <div className="media-holder">
-          {/*<Image layout="fill" objectFit="cover" src={media} alt="product card"/>*/}
+          <Image layout="fill" objectFit="cover" src={media} alt="product card"/>
           <span className="stats"></span>
       </div>
       <div className='card-content'>

@@ -4,7 +4,10 @@ import Footer from "../Footer";
 import {useRouter} from "next/router";
 import {useEffect, useState} from "react";
 import Sidebar from "./Sidebar";
+import styles from "../styles/Home.module.css";
+import Switch from "@mui/material/Switch";
 
+const label = { inputProps: { "aria-label": "Switch demo" } };
 const Base = ({children}: { children: JSX.Element }) => {
     const router = useRouter()
     const [home, setHome] = useState(true)
@@ -14,7 +17,10 @@ const Base = ({children}: { children: JSX.Element }) => {
     return (
         <>
             {home && <div>
-                <Navbar></Navbar>
+                <Navbar/>
+                <Switch {...label} defaultChecked />
+                <Switch {...label} />
+                <Switch {...label} disabled defaultChecked />
                 <div className="flex flex-col justify-between min-h-screen">
                     <main>{children}</main>
                 </div>

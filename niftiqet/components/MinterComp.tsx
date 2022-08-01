@@ -5,12 +5,20 @@ import {MetadataField} from 'mintbase'
 import {gql} from 'apollo-boost'
 import {useLazyQuery} from '@apollo/client'
 
-import {useState, useEffect} from 'react'
+import React, {useState, useEffect} from 'react'
 
 import {useWallet} from '../services/providers/MintbaseWalletContext'
 import firebase from "firebase";
 import functions = firebase.functions;
-
+import Compressor from 'compressorjs'
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import type {} from '@mui/x-date-pickers/themeAugmentation';
+import '@date-io/date-fns'
 const FETCH_MINTER_STORE = gql`
     query FetchMinterStores($minter: String!) {
         store(where: { minters: { account: { _eq: $minter } } }) {
@@ -20,10 +28,17 @@ const FETCH_MINTER_STORE = gql`
 `
 
 const MinterComp = ({closeModal}: { closeModal: Function }) => {
+    const [eventTime, setEventTime] = useState<Date | null>(
+        new Date(),
+    );
+
+    const handleChange = (newValue: Date | null) => {
+        setEventTime(newValue);
+    };
     const {wallet, isConnected, details} = useWallet()
     const [coverImage, setCoverImage] = useState<File | null>(null)
     const [isMinting, setIsMinting] = useState<boolean>(false)
-
+    const [startDate, setStartDate] = useState(new Date());
     const [fetchStores, {called, loading, data}] = useLazyQuery(
         FETCH_MINTER_STORE,
         {variables: {minter: details.accountId}}
@@ -42,9 +57,19 @@ const MinterComp = ({closeModal}: { closeModal: Function }) => {
     } = useForm()
 
     const handleCoverImage = (e: any) => {
-        const file = e.target.files[0]
-
-        setCoverImage(file)
+        const image = e.target.files[0];
+        new Compressor(image, {
+            quality: 0.7, // 0.6 can also be used, but its not recommended to go below.
+            maxWidth: 1366, // 0.6 can also be used, but its not recommended to go below.
+            maxHeight: 968, // 0.6 can also be used, but its not recommended to go below.
+            convertSize: 2000000, // 0.6 can also be used, but its not recommended to go below.
+            success: (res) => {
+                // compressedResult has the compressed file.
+                // Use the compressed file to upload the images to your server.
+                // @ts-ignore
+                setCoverImage(res)
+            },
+        });
     }
 
     const onSubmit = async (data: any) => {
@@ -64,7 +89,7 @@ const MinterComp = ({closeModal}: { closeModal: Function }) => {
         wallet.minter.setMetadata({
             title: data.title,
             description: data.description,
-            extra: data.time
+            extra: {when: eventTime}
         })
 
         setIsMinting(false)
@@ -76,6 +101,8 @@ const MinterComp = ({closeModal}: { closeModal: Function }) => {
 
     if (loading) return <div>Loading...</div>
 
+    // @ts-ignore
+    // @ts-ignore
     return (
         <div
             className="fixed z-50 inset-0 overflow-y-auto"
@@ -135,7 +162,18 @@ const MinterComp = ({closeModal}: { closeModal: Function }) => {
                                     Simple Minter
                                 </h1>
                             </div>
-                            <div className="mb-4">
+                            <div className="mui-input mb-4">
+                            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                <DateTimePicker
+                                    minDateTime={new Date()}
+                                    label="Date&Time picker"
+                                    value={eventTime}
+                                    onChange={handleChange}
+                                    renderInput={(params) => <TextField disabled size="small" {...params} />}
+                                />
+                            </LocalizationProvider>
+                            </div>
+                            <div className="mui-input mb-4">
                                 <label className="block text-gray-700 text-sm font-bold mb-2">
                                     Contract
                                 </label>
@@ -157,7 +195,6 @@ const MinterComp = ({closeModal}: { closeModal: Function }) => {
                                     </p>
                                 )}
                             </div>
-
                             <div className="mb-4">
                                 <label className="block text-gray-700 text-sm font-bold mb-2">
                                     Title
