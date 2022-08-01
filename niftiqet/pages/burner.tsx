@@ -21,7 +21,7 @@ const Burner = () => {
                 </svg>
             </h3>
             </div>
-            <Products burner={true}  storeId="niftiqet.mintspace2.testnet"/>
+            <Products storeId="niftiqet.mintspace2.testnet"/>
         </div>
     );
 }

@@ -60,13 +60,16 @@ const FETCH_STORE = gql`
             minter
             id
             thingId
+            ownerId
             thing {
+              storeId
               metadata {
                 thing_id
                 media
                 id
                 title
                 type
+                description
                 extra
               }
             }
@@ -87,6 +90,7 @@ const FETCH_STORE = gql`
             id
             title
             type
+            description
             extra
           }
         }
@@ -144,6 +148,7 @@ const Products = ({ storeId }: { storeId: string }) => {
 
   const {wallet, isConnected, details} = useWallet()
   useEffect(() => {
+    console.log(data?.store)
     let newThings;
       if (!data) return
 
@@ -220,40 +225,43 @@ const Products = ({ storeId }: { storeId: string }) => {
                 <DialogTitle id="scroll-dialog-title">List of Tickets</DialogTitle>
                 <div className="d">
                   <CssVarsProvider>
-                    {!batch && <JButton
-                        onClick={() => setBatch(true)}
-                        variant="solid"
-                        size="sm"
-                        color="primary"
-                        aria-label="Batch Listing"
-                        sx={{ml: 'auto', fontWeight: 600}}
-                    >
-                      Batch List
-                    </JButton>}
-                    {batch &&
-                        <Box sx={{ display: 'flex', gap: 2.5 }}>
-                        <JButton
-                        onClick={() => setBatch(false)}
-                        variant="solid"
-                        size="sm"
-                        color="danger"
-                        aria-label="Cancel Batch Listing"
-                        sx={{ml: 'auto', fontWeight: 600}}
-                    >
-                      Cancel Batch List
-                    </JButton>
-                      <JButton
-                        variant="solid"
-                        size="sm"
-                        color="success"
-                        aria-label="List Tickets"
-                        sx={{ml: 'auto', fontWeight: 600}}
-                    >
-                      List Selected
-                    </JButton>
-                        </Box>
+                    {store?.owner === details.accountId && <div className="">
+                      {!batch && <JButton
+                          onClick={() => setBatch(true)}
+                          variant="solid"
+                          size="sm"
+                          color="primary"
+                          aria-label="Batch Listing"
+                          sx={{ml: 'auto', fontWeight: 600}}
+                      >
+                        Batch List
+                      </JButton>}
+                      {batch &&
+                          <Box sx={{display: 'flex', gap: 2.5}}>
+                            <JButton
+                                onClick={() => setBatch(false)}
+                                variant="solid"
+                                size="sm"
+                                color="danger"
+                                aria-label="Cancel Batch Listing"
+                                sx={{ml: 'auto', fontWeight: 600}}
+                            >
+                              Cancel Batch List
+                            </JButton>
+                            <JButton
+                                variant="solid"
+                                size="sm"
+                                color="success"
+                                aria-label="List Tickets"
+                                sx={{ml: 'auto', fontWeight: 600}}
+                                onClick={() => setPriceModal(true)}
+                            >
+                              List Selected
+                            </JButton>
+                          </Box>
 
-                    }
+                      }
+                    </div>}
                   </CssVarsProvider>
                 </div>
               </Box>
@@ -263,12 +271,11 @@ const Products = ({ storeId }: { storeId: string }) => {
                     ref={descriptionElementRef}
                     tabIndex={-1}
                 >
-                  <Tickets batch={batch} batchList={batchList} setBatchList={handleCheck} thing={thing} />
+                  <Tickets priceModal={priceModal} batch={batch} batchList={batchList} setBatchList={handleCheck} thing={thing} />
                 </DialogContentText>
               </DialogContent>
               <DialogActions>
-                <Button onClick={handleClose}>Cancel</Button>
-                <Button onClick={handleClose}>Subscribe</Button>
+                <Button color="error" onClick={handleClose}>Close</Button>
               </DialogActions>
             </Dialog>
           </div>
