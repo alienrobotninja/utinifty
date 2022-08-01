@@ -6,7 +6,18 @@ import Card from "./Card";
 import {useWallet} from "../services/providers/MintbaseWalletContext";
 import Ticketing from "../pages/ticketing";
 import Tickets from "./Ticketing/Tickets";
-import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogProps, DialogTitle} from "@mui/material";
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogProps,
+  DialogTitle
+} from "@mui/material";
+import JButton from '@mui/joy/Button';
+import { CssVarsProvider } from '@mui/joy/styles';
 
 const FETCH_STORE = gql`
   query FetchStore($storeId: String!, $limit: Int = 20, $offset: Int = 0) {
@@ -120,6 +131,8 @@ const Products = ({ storeId }: { storeId: string }) => {
   const [thing, setThing] = useState<Thing | null>(null)
   const [activeThing, setActiveThing] = useState<string>("")
   const [priceModal, setPriceModal] = useState(false);
+  const [batchList, setBatchList] = useState([]);
+  const [batch, setBatch] = useState(false);
 
   const { data, loading } = useQuery(FETCH_STORE, {
     variables: {
@@ -163,7 +176,20 @@ const Products = ({ storeId }: { storeId: string }) => {
     setOpen(false);
   };
   const [open, setOpen] = useState(false);
-
+// Add/Remove checked item from list
+  // @ts-ignore
+  const handleCheck = ({target}, id) => {
+    console.log(target.value)
+    let updatedList = [...batchList];
+    if (target.checked) {
+      // @ts-ignore
+      updatedList = [...batchList, id];
+    } else {
+      // @ts-ignore
+      updatedList.splice(batchList.indexOf(id), 1);
+    }
+    setBatchList(updatedList);
+  };
   const descriptionElementRef = useRef<HTMLElement>(null);
   useEffect(() => {
     if (open) {
@@ -190,14 +216,54 @@ const Products = ({ storeId }: { storeId: string }) => {
                 aria-labelledby="scroll-dialog-title"
                 aria-describedby="scroll-dialog-description"
             >
-              <DialogTitle id="scroll-dialog-title">List of Tickets</DialogTitle>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 20px' }}>
+                <DialogTitle id="scroll-dialog-title">List of Tickets</DialogTitle>
+                <div className="d">
+                  <CssVarsProvider>
+                    {!batch && <JButton
+                        onClick={() => setBatch(true)}
+                        variant="solid"
+                        size="sm"
+                        color="primary"
+                        aria-label="Batch Listing"
+                        sx={{ml: 'auto', fontWeight: 600}}
+                    >
+                      Batch List
+                    </JButton>}
+                    {batch &&
+                        <Box sx={{ display: 'flex', gap: 2.5 }}>
+                        <JButton
+                        onClick={() => setBatch(false)}
+                        variant="solid"
+                        size="sm"
+                        color="danger"
+                        aria-label="Cancel Batch Listing"
+                        sx={{ml: 'auto', fontWeight: 600}}
+                    >
+                      Cancel Batch List
+                    </JButton>
+                      <JButton
+                        variant="solid"
+                        size="sm"
+                        color="success"
+                        aria-label="List Tickets"
+                        sx={{ml: 'auto', fontWeight: 600}}
+                    >
+                      List Selected
+                    </JButton>
+                        </Box>
+
+                    }
+                  </CssVarsProvider>
+                </div>
+              </Box>
               <DialogContent dividers={scroll === 'paper'}>
                 <DialogContentText
                     id="scroll-dialog-description"
                     ref={descriptionElementRef}
                     tabIndex={-1}
                 >
-                  <Tickets thing={thing} />
+                  <Tickets batch={batch} batchList={batchList} setBatchList={handleCheck} thing={thing} />
                 </DialogContentText>
               </DialogContent>
               <DialogActions>

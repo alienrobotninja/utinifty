@@ -13,6 +13,7 @@ import {formatNearAmount} from "near-api-js/lib/utils/format";
 // @ts-ignore
 import BookmarkAdd from '@mui/icons-material/BookmarkAddOutlined';
 import { CssVarsProvider } from '@mui/joy/styles';
+import {Checkbox} from "@mui/joy";
 type Thing = {
     id: string
     metadata: {
@@ -38,7 +39,7 @@ type TokenList = {
     price: string
 }
 const GAS = 100000000000000
-const Tickets = ({ thing }: { thing: any }) => {
+const Tickets = ({ thing, batchList, setBatchList, batch }: { thing: any, batchList: Array<any>, setBatchList: Function, batch: Boolean }) => {
     const {wallet, isConnected, details} = useWallet()
     const [listModal, setListModal] = useState({state: false, tokenId: "", storeId: ""});
     const [price, setPrice] = useState("");
@@ -67,6 +68,9 @@ const Tickets = ({ thing }: { thing: any }) => {
             {thing?.tokens.map((token: Token) => (
             <CssVarsProvider key={token?.id} >
             <Card variant="outlined" sx={{ minWidth: '320px' }}>
+                {!token.list && batch && <Checkbox
+                    variant="solid"
+                    checked={batchList.includes(token.id)} onChange={(e) => setBatchList(e, token.id)}/>}
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
                     <Typography level="h2" fontSize="md" sx={{ alignSelf: 'flex-start' }}>
                         {token.thing.metadata.title}
@@ -101,15 +105,24 @@ const Tickets = ({ thing }: { thing: any }) => {
                             { token.list ? formatNearAmount(Number(token.list.price).toLocaleString('fullwide', { useGrouping: false })) + " NEAR" : "Not Listed" }
                         </Typography>
                     </div>
-                    <Button
+                    {!token.list && !batch && <Button
                         variant="solid"
                         size="sm"
                         color="primary"
                         aria-label="Explore Bahamas Islands"
-                        sx={{ ml: 'auto', fontWeight: 600 }}
+                        sx={{ml: 'auto', fontWeight: 600}}
                     >
-                        Explore
-                    </Button>
+                        List Ticket
+                    </Button>}
+                    {token.list && <Button
+                        variant="solid"
+                        size="sm"
+                        color="danger"
+                        aria-label="Explore Bahamas Islands"
+                        sx={{ml: 'auto', fontWeight: 600}}
+                    >
+                        Burn Ticket
+                    </Button>}
                 </Box>
             </Card>
             </CssVarsProvider>
