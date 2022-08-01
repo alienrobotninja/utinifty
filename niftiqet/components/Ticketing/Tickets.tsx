@@ -17,6 +17,7 @@ import { CssVarsProvider } from '@mui/joy/styles';
 import {Checkbox} from "@mui/joy";
 import Modal from "@mui/material/Modal";
 import {Dialog, DialogActions, DialogContent, DialogTitle, TextField} from "@mui/material";
+import Image from "next/image";
 type Thing = {
     id: string
     metadata: {
@@ -134,7 +135,8 @@ const Tickets = ({ thing, batchList, setBatchList, batch, priceModal }: { thing:
                     </IconButton>
 
                     <AspectRatio minHeight="120px" maxHeight="200px" sx={{ my: 2 }}>
-                        <img
+                        <Image
+                            layout="fill"
                             src={token?.thing?.metadata?.media}
                             alt="Ticket Image"
                         />
