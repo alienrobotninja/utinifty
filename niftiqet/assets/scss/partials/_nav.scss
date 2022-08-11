@@ -1,0 +1,50 @@
+.navbar {
+  min-height: 5.4rem;
+  background: transparent;
+  .navbar-burger,
+  .navbar-brand {
+    height: 5.4rem;
+    color: #fafafa;
+  }
+  .navbar-item {
+    color: #fafafa;
+    font-weight: 700;
+    a {
+      &:not(.button):hover {
+        background: linear-gradient(270deg, #F42A8B 1.42%, #67D2E1 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-fill-color: transparent;
+      }
+    }
+    .search--input {
+      background: #031C1E;
+      border-radius: 35px;
+      border: 0;
+      min-width: 280px;
+      &::placeholder {
+        color: #A4B1B1;
+      }
+    }
+  }
+}
+/*.icon {
+  color: transparent;
+}*/
+.button.is-primary {
+  background: linear-gradient(270deg, #f42a8b 1.42%, #67d2e1 100%);
+  border-radius: 8px;
+  border: 0;
+  transition: all 0.3s ease-in-out;
+  .icon-wallet {
+    color: transparent;
+  }
+  &.hover {
+    background: linear-gradient(270deg, #f42a8b 10.42%, #67d2e1 90%);
+  }
+}
+.navbar-menu.is-active {
+  background: $primary;
+}
+

@@ -89,3 +89,5 @@ sw.*
 
 # Vim swap files
 *.swp
+niftiqet/.git
+niftiqet/.idea
