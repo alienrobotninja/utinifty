@@ -26,6 +26,10 @@ import { useStore } from '@/store'
 
 export default {
   name: 'SellForm',
+  props: {
+    tokenId: { type: String, default: null, required: false },
+    storeId: { type: String, default: null, required: false }
+  },
   data () {
     return {
       price: '',
@@ -46,12 +50,8 @@ export default {
         })
         return
       }
-      this.wallet?.list(this.symbol, this.storeId, this.price)
+      this.wallet?.list(`${this.tokenId}`, `${this.storeId}`, `${this.price}`)
     }
-  },
-  props: {
-    tokenId: { type: String, default: null, required: false },
-    storeId: { type: String, default: null, required: false }
   }
 }
 </script>

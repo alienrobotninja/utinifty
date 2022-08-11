@@ -29,6 +29,10 @@ export default {
   transition: .3s ease-in-out;
   &:hover {
     transform: scale(1.07);
+    border: solid 2px #f74d4d;
+  }
+  &.token--active {
+    border: solid 2px #f74d4d;
   }
   img {
     height: 150px;

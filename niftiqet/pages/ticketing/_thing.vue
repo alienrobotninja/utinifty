@@ -1,7 +1,14 @@
 <template>
   <section class="thing--details">
     <div class="tokens">
-      <DashToken v-for="(token, i) in tokens" :id="token?.id" :key="i" :token="token" @click="setActiveToken($event, token)" />
+      <DashToken
+        v-for="(token, i) in tokens"
+        :id="token?.id"
+        :key="i"
+        :class="{'token--active': activeToken?.id === token?.id}"
+        :token="token"
+        @click="setActiveToken($event, token)"
+      />
     </div>
     <div class="token--details">
       <div class="token--info">
@@ -158,6 +165,7 @@ hr {
       height: 100%;
       overflow-x: hidden;
       overflow-y: auto;
+      grid-auto-rows: max-content
     }
     .token--details {
       background: #031C1E;
