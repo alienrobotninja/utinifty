@@ -52,6 +52,7 @@ export const fetchStore = gql`
             thingId
             ownerId
             royaltyPercent
+            burnedAt
             splits {
               id
               percent

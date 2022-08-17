@@ -5,7 +5,7 @@
         v-for="(token, i) in tokens"
         :id="token?.id"
         :key="i"
-        :class="{'token--active': activeToken?.id === token?.id}"
+        :class="{'token--active': activeToken?.id === token?.id, 'token--burned': token?.burnedAt}"
         :token="token"
         @click="setActiveToken($event, token)"
       />
@@ -53,13 +53,25 @@
         </div>
       </div>
       <div class="token--actions">
-        <b-button type="is-success" :disabled="details?.accountId === activeToken?.ownerId || activeToken?.list?.ownerId === details?.accountId">
+        <b-button
+          type="is-success"
+          :disabled="
+            details?.accountId === activeToken?.ownerId ||
+              activeToken?.list?.ownerId === details?.accountId ||
+              activeToken?.burnedAt || !activeToken?.list"
+          @click="buyTicket($event, activeToken?.id, activeToken?.list?.price)"
+        >
           Buy
         </b-button>
-        <b-button type="is-danger" :disabled="details?.accountId !== activeToken?.ownerId">
+        <b-button type="is-danger" :disabled="details?.accountId !== activeToken?.ownerId || activeToken?.burnedAt" @click.prevent="confirmBurn">
           Burn
         </b-button>
-        <b-button type="is-dark" :disabled="details?.accountId !== activeToken?.ownerId" @click.prevent="sellTIcket = true">
+        <b-button
+          type="is-dark"
+          :disabled="details?.accountId !== activeToken?.ownerId ||
+            activeToken?.list?.ownerId === details?.accountId || activeToken?.burnedAt"
+          @click.prevent="sellTIcket = true"
+        >
           Sell
         </b-button>
       </div>
@@ -139,8 +151,29 @@ export default {
     setActiveToken (_, token) {
       this.activeToken = token
     },
-    sellToken () {
-
+    burnTicket (_, token) {
+      this.wallet?.burn([this.activeToken?.id]).then(() => {
+        this.$buefy.toast.open('Ticket Burnt Successfully!')
+      }).catch(() => {
+        this.$buefy.toast.open({
+          duration: 5000,
+          message: 'Failed to burn TIcket!',
+          type: 'is-danger'
+        })
+      })
+    },
+    confirmBurn () {
+      this.$buefy.dialog.confirm({
+        title: 'Burning Ticket',
+        message: 'Are you sure you want to <b>Burn</b> this ticket? This action cannot be undone.',
+        confirmText: 'Burn Ticket',
+        type: 'is-danger',
+        hasIcon: true,
+        onConfirm: () => this.burnTicket()
+      })
+    },
+    buyTicket (_, tokenId, price) {
+      this.wallet?.makeOffer(tokenId, Number(price).toLocaleString('fullwide', { useGrouping: false }))
     }
   }
 }

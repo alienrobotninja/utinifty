@@ -19,6 +19,7 @@
     "compressorjs": "^1.1.1",
     "core-js": "^3.19.3",
     "mintbase": "^0.7.0",
+    "near-api-js": "^0.45.1",
     "nuxt": "^2.15.8",
     "nuxt-buefy": "^0.4.13",
     "pinia": "^2.0.17",

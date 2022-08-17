@@ -22,6 +22,7 @@
 
 <script>
 import { mapWritableState } from 'pinia'
+import { parseNearAmount } from 'near-api-js/lib/utils/format'
 import { useStore } from '@/store'
 
 export default {
@@ -37,6 +38,9 @@ export default {
     }
   },
   computed: {
+    parsedPrice () {
+      return `${parseNearAmount(this.price)}`
+    },
     // same as above but registers it as this.myOwnName
     ...mapWritableState(useStore, ['wallet', 'details', 'isConnected', 'loading', 'creator'])
   },
@@ -50,7 +54,7 @@ export default {
         })
         return
       }
-      this.wallet?.list(`${this.tokenId}`, `${this.storeId}`, `${this.price}`)
+      this.wallet?.list(`${this.tokenId}`, `${this.storeId}`, `${this.parsedPrice}`)
     }
   }
 }
