@@ -1,0 +1,6 @@
+query FetchMinterStores($minter: String!) {
+    store(where: { minters: { account: { _eq: $minter } } }) {
+      id
+      name
+    }
+}
