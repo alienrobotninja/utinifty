@@ -1,28 +1,57 @@
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
-    modules: ['nuxt-graphql-client', '@nuxtjs/tailwindcss', '@nuxtjs/color-mode', '@vuestic/nuxt'],
+  head: {
+    title: 'Niftiqet',
+    meta: [{
+      charset: 'utf-8'
+    },
+    {
+      name: 'viewport',
+      content: 'width=device-width, initial-scale=1'
+    },
+    {
+      hid: 'description',
+      name: 'description',
+      content: ''
+    },
+    {
+      name: 'format-detection',
+      content: 'telephone=no'
+    }],
+    link: [{
+      rel: 'icon',
+      type: 'image/x-icon',
+      href: '/favicon.ico'
+    },
+    {
+      rel: 'preconnect',
+      href: 'https://fonts.googleapis.com',
+    },
+    {
+      rel: 'preconnect',
+      href: 'https://fonts.gstatic.com',
+      crossorigin: true
+    },
+    {
+      rel: 'stylesheet',
+      href: 'https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&display=swap'
+    },
+      {
+        rel: 'stylesheet',
+        href: 'https://cdn.cryptofonts.com/1.4.0/cryptofont.css'
+      }
+    ]
+  },
+  css: [
+    '~/assets/scss/style.scss',
+    '~/assets/iconsax.css',
+    '~/assets/cryptofont.min.css'
+  ],
+    modules: ['nuxt-graphql-client', '@nuxtjs/tailwindcss', '@nuxtjs/color-mode', '@formkit/nuxt'],
     colorMode: {
         preference: 'system', // default theme
         dataValue: 'theme', // activate data-theme in <html> tag
         classSuffix: '',
-    },
-    vuestic: {
-        config: {
-            colors: {
-                // Default colors
-                primary: '#23e066',
-                secondary: '#002c85',
-                success: '#40e583',
-                info: '#2c82e0',
-                danger: '#e34b4a',
-                warning: '#ffc200',
-                gray: '#babfc2',
-                dark: '#34495e',
-
-                // Custom colors
-                yourCustomColor: '#d0f55d',
-            },
-        }
     },
     runtimeConfig: {
         public: {

@@ -1,0 +1,21 @@
+@import "partials/variables";
+@import "partials/reset";
+@import "partials/buttons";
+
+body {
+  & > * {
+    position: relative;
+    z-index: 2;
+  }
+  &:after {
+    content: '';
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background: url("/ellispe_bg.png") no-repeat fixed;
+    //background: url("/ellispe_bg.png") no-repeat fixed;
+    background-size: cover;
+  }
+}

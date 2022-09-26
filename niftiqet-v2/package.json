@@ -12,11 +12,13 @@
     "nuxt": "3.0.0-rc.10"
   },
   "dependencies": {
+    "@formkit/nuxt": "^1.0.0-beta.11-c95e605",
+    "@formkit/themes": "^1.0.0-beta.10",
     "@nuxtjs/color-mode": "^3.1.5",
-    "@vuestic/nuxt": "^1.0.6",
     "daisyui": "^2.27.0",
     "mintbase": "^0.8.0-rc.5",
     "nuxt-graphql-client": "^0.1.17",
+    "sass": "^1.54.9",
     "unplugin-vue-components": "^0.22.7"
   }
 }
